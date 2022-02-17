@@ -1,16 +1,9 @@
-# flutter_flappysnakedino
+# Flutter FlappySnakeDino
 
-Flutter game idea.
+The idea is to code three classic games in one full application: Flappy Bird, Snake and Chrome Dino.
 
-## Getting Started
+This is a follow up project on one of the first "complex" tutorials I did when starting Flutter.
 
-This project is a starting point for a Flutter application.
+## Resources
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+[Mitch Koko's Flappy Bird Tutorial](https://www.youtube.com/watch?v=vgmVPpFP0fI&list=PLlvRDpXh1Se6kipeBLiF1xByAEmxYie6J&index=8&t=8s)
