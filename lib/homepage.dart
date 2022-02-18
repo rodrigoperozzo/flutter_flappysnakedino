@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_flappysnakedino/bird.dart';
+import 'package:flutter_flappysnakedino/obstacle.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -11,12 +12,17 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   // flappy bird variables
+  // the good part of having all these variables declared here
+  // is that everything from the game can be controlled and manipulated
+  // and almost all sizes are proportions so can work based on screen size
   static double birdY = 0;
   double initialPosition = birdY;
   double height = 0;
   double time = 0;
   double gravity = -4.9;
-  double velocity = 3.5;
+  double velocity = 1.5;
+  double birdWidth = 0.20;
+  double birdHeight = 0.25;
 
   // game settings
   bool gameStarted = false;
@@ -24,8 +30,8 @@ class _HomePageState extends State<HomePage> {
   // obstacles variables
   // two obstacles
   static List<double> obstacleX = [2, 2 + 1.5];
-  static double barrierWidth = 0.5;
-  List<List<double>> barrierHeight = [
+  static double obstacleWidth = 0.5;
+  List<List<double>> obstacleHeight = [
     // max 2 where 2 is all the screen
     // [topHeight, bottomHeight]
     [0.6, 0.4],
@@ -42,6 +48,7 @@ class _HomePageState extends State<HomePage> {
       setState(() {
         // subtracting makes it go up
         birdY = initialPosition - height;
+
       });
 
       if (birdDied()) {
@@ -50,9 +57,23 @@ class _HomePageState extends State<HomePage> {
         _showDialogBox();
       }
 
+      moveMap();
+
       // time goes on
       time += 0.01;
     });
+  }
+
+  void moveMap() {
+    for (int i = 0; i < obstacleX.length; i++) {
+      setState(() {
+        obstacleX[i] -= 0.005;
+      });
+
+      if (obstacleX[i] < -1.5) {
+        obstacleX[i] += 3;
+      }
+    }
   }
 
   void _showDialogBox() {
@@ -108,7 +129,16 @@ class _HomePageState extends State<HomePage> {
       return true;
     }
 
-    // another if: touched barriers
+    // hits barrier
+    for (int i = 0; i < obstacleX.length; i++) {
+      if (obstacleX[i] <= birdWidth &&
+          obstacleX[i] + obstacleWidth >= -birdWidth &&
+          (birdY <= -1 + obstacleHeight[i][0] ||
+              birdY + birdHeight >= 1 - obstacleHeight[i][1])) {
+        return true;
+      }
+    }
+
     return false;
   }
 
@@ -129,9 +159,10 @@ class _HomePageState extends State<HomePage> {
                 child: Center(
                   child: Stack(
                     children: [
-                      Container(
-                        alignment: Alignment(0, birdY),
-                        child: const FlappyBird(),
+                      FlappyBird(
+                        birdY: birdY,
+                        birdHeight: birdHeight,
+                        birdWidth: birdWidth,
                       ),
                       Container(
                           alignment: const Alignment(0, -0.5),
@@ -140,7 +171,35 @@ class _HomePageState extends State<HomePage> {
                                   ? ''
                                   : 'A P E R T E   P A R A   J O G A R',
                               style: const TextStyle(
-                                  color: Colors.white, fontSize: 22)))
+                                  color: Colors.white, fontSize: 22))),
+
+                      // top obstacle 0
+                      Obstacle(
+                          isObstacleBottom: false,
+                          obstacleX: obstacleX[0],
+                          obstacleWidth: obstacleWidth,
+                          obstacleHeight: obstacleHeight[0][0]),
+
+                      // bottom obstacle 0
+                      Obstacle(
+                          isObstacleBottom: true,
+                          obstacleX: obstacleX[0],
+                          obstacleWidth: obstacleWidth,
+                          obstacleHeight: obstacleHeight[0][1]),
+
+                      // top obstacle 1
+                      Obstacle(
+                          isObstacleBottom: false,
+                          obstacleX: obstacleX[1],
+                          obstacleWidth: obstacleWidth,
+                          obstacleHeight: obstacleHeight[1][0]),
+
+                      // bottom obstacle 1
+                      Obstacle(
+                          isObstacleBottom: true,
+                          obstacleX: obstacleX[1],
+                          obstacleWidth: obstacleWidth,
+                          obstacleHeight: obstacleHeight[1][1])
                     ],
                   ),
                 ),

@@ -2,7 +2,7 @@
 
 The idea is to code three classic games in one full application: Flappy Bird, Snake and Chrome Dino.
 
-This is a follow up project on one of the first "complex" tutorials I did when starting Flutter.
+This is a follow up project on one of the first full app tutorials I did when starting Flutter.
 
 ## Resources
 
